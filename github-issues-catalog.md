@@ -1,0 +1,60 @@
+# GitHub Issues Catalog — Local LLM Gateway
+
+**Total Issues:** 34 (6 Milestone Epics + 28 User Stories)  
+**Target Repository:** [`thaihocnguyen-git/my-llm-gateway`](https://github.com/thaihocnguyen-git/my-llm-gateway)  
+**Automated Deployer Script:** [`scripts/windows/create-github-issues.ps1`](file:///D:/Sources/my-llm-gateway/scripts/windows/create-github-issues.ps1)
+
+---
+
+## How to Publish These Issues to GitHub
+
+You can publish all 34 issues, labels, and milestones automatically using PowerShell:
+
+```powershell
+# Set your Personal Access Token (requires 'repo' scope)
+$env:GITHUB_TOKEN = "ghp_yourPersonalAccessTokenHere"
+
+# Run the automated issue creator
+.\scripts\windows\create-github-issues.ps1
+```
+
+---
+
+## Issue Master Table
+
+| # | Issue Title | Milestone | Labels | Local Markdown File |
+|---|---|---|---|---|
+| 01 | **[Epic] M1: Local Inference Engine Setup & Benchmarking** | M1: Local Inference Engine | `epic`, `milestone-1`, `performance` | [issue-01-epic-m1-local-inference-engine-setup-benchmarking.md](file:///D:/Sources/my-llm-gateway/github-issues/issue-01-epic-m1-local-inference-engine-setup-benchmarking.md) |
+| 02 | **[Epic] M2: Gateway Deployment & Core Routing Engine** | M2: Gateway Deployment | `epic`, `milestone-2`, `gateway` | [issue-02-epic-m2-gateway-deployment-core-routing-engine.md](file:///D:/Sources/my-llm-gateway/github-issues/issue-02-epic-m2-gateway-deployment-core-routing-engine.md) |
+| 03 | **[Epic] M3: Identity, Authorization & Gateway Security Hardening** | M3: Auth & Security Hardening | `epic`, `milestone-3`, `security` | [issue-03-epic-m3-identity-authorization-gateway-security-hardening.md](file:///D:/Sources/my-llm-gateway/github-issues/issue-03-epic-m3-identity-authorization-gateway-security-hardening.md) |
+| 04 | **[Epic] M4: Private Remote Access via Tailscale** | M4: Private Remote Access | `epic`, `milestone-4`, `networking` | [issue-04-epic-m4-private-remote-access-via-tailscale.md](file:///D:/Sources/my-llm-gateway/github-issues/issue-04-epic-m4-private-remote-access-via-tailscale.md) |
+| 05 | **[Epic] M5: Client Integration & Upstream Robustness** | M5: Client Compatibility | `epic`, `milestone-5`, `client-testing` | [issue-05-epic-m5-client-integration-upstream-robustness.md](file:///D:/Sources/my-llm-gateway/github-issues/issue-05-epic-m5-client-integration-upstream-robustness.md) |
+| 06 | **[Epic] M6: Observability, Telemetry & Operational Lifecycle** | M6: Monitoring & Ops Hardening | `epic`, `milestone-6`, `monitoring` | [issue-06-epic-m6-observability-telemetry-operational-lifecycle.md](file:///D:/Sources/my-llm-gateway/github-issues/issue-06-epic-m6-observability-telemetry-operational-lifecycle.md) |
+| 07 | **[US-1.1] Project Directory Structure & Version Control Setup** | *(None)* | `setup`, `devops` | [issue-07-us-1-1-project-directory-structure-version-control-setup.md](file:///D:/Sources/my-llm-gateway/github-issues/issue-07-us-1-1-project-directory-structure-version-control-setup.md) |
+| 08 | **[US-1.2] Host Hardware, GPU Drivers & Container Runtime Verification** | *(None)* | `setup`, `devops` | [issue-08-us-1-2-host-hardware-gpu-drivers-container-runtime-verification.md](file:///D:/Sources/my-llm-gateway/github-issues/issue-08-us-1-2-host-hardware-gpu-drivers-container-runtime-verification.md) |
+| 09 | **[US-2.1] Ollama Installation & Windows Service Lifecycle** | M1: Local Inference Engine | `milestone-1`, `performance`, `ollama` | [issue-09-us-2-1-ollama-installation-windows-service-lifecycle.md](file:///D:/Sources/my-llm-gateway/github-issues/issue-09-us-2-1-ollama-installation-windows-service-lifecycle.md) |
+| 10 | **[US-2.2] Initial Model Download & Tag Verification** | M1: Local Inference Engine | `milestone-1`, `performance`, `ollama` | [issue-10-us-2-2-initial-model-download-tag-verification.md](file:///D:/Sources/my-llm-gateway/github-issues/issue-10-us-2-2-initial-model-download-tag-verification.md) |
+| 11 | **[US-2.3] GPU Acceleration, Memory Footprint & Latency Benchmarking** | M1: Local Inference Engine | `milestone-1`, `performance`, `ollama` | [issue-11-us-2-3-gpu-acceleration-memory-footprint-latency-benchmarking.md](file:///D:/Sources/my-llm-gateway/github-issues/issue-11-us-2-3-gpu-acceleration-memory-footprint-latency-benchmarking.md) |
+| 12 | **[US-3.1] PostgreSQL Persistent Database Deployment via Docker Compose** | M2: Gateway Deployment | `milestone-2`, `gateway`, `litellm` | [issue-12-us-3-1-postgresql-persistent-database-deployment-via-docker-compose.md](file:///D:/Sources/my-llm-gateway/github-issues/issue-12-us-3-1-postgresql-persistent-database-deployment-via-docker-compose.md) |
+| 13 | **[US-3.2] LiteLLM Proxy Native Windows Installation & Environment Setup** | M2: Gateway Deployment | `milestone-2`, `gateway`, `litellm` | [issue-13-us-3-2-litellm-proxy-native-windows-installation-environment-setup.md](file:///D:/Sources/my-llm-gateway/github-issues/issue-13-us-3-2-litellm-proxy-native-windows-installation-environment-setup.md) |
+| 14 | **[US-3.3] Model Mapping, Abstraction & Provider Configuration** | M2: Gateway Deployment | `milestone-2`, `gateway`, `litellm` | [issue-14-us-3-3-model-mapping-abstraction-provider-configuration.md](file:///D:/Sources/my-llm-gateway/github-issues/issue-14-us-3-3-model-mapping-abstraction-provider-configuration.md) |
+| 15 | **[US-3.4] OpenAI API Compatibility & Server-Sent Events (SSE) Streaming** | M2: Gateway Deployment | `milestone-2`, `gateway`, `litellm` | [issue-15-us-3-4-openai-api-compatibility-server-sent-events-sse-streaming.md](file:///D:/Sources/my-llm-gateway/github-issues/issue-15-us-3-4-openai-api-compatibility-server-sent-events-sse-streaming.md) |
+| 16 | **[US-4.1] Master Key & Administrative Credential Isolation** | M3: Auth & Security Hardening | `milestone-3`, `security`, `auth` | [issue-16-us-4-1-master-key-administrative-credential-isolation.md](file:///D:/Sources/my-llm-gateway/github-issues/issue-16-us-4-1-master-key-administrative-credential-isolation.md) |
+| 17 | **[US-4.2] Client Virtual API Key Lifecycle Management** | M3: Auth & Security Hardening | `milestone-3`, `security`, `auth` | [issue-17-us-4-2-client-virtual-api-key-lifecycle-management.md](file:///D:/Sources/my-llm-gateway/github-issues/issue-17-us-4-2-client-virtual-api-key-lifecycle-management.md) |
+| 18 | **[US-4.3] Per-Key Model Access Control, Rate Limiting & Concurrency Controls** | M3: Auth & Security Hardening | `milestone-3`, `security`, `auth` | [issue-18-us-4-3-per-key-model-access-control-rate-limiting-concurrency-controls.md](file:///D:/Sources/my-llm-gateway/github-issues/issue-18-us-4-3-per-key-model-access-control-rate-limiting-concurrency-controls.md) |
+| 19 | **[US-4.4] Security Hardening, Payload Limits & Sensitive Data Redaction** | M3: Auth & Security Hardening | `milestone-3`, `security`, `auth` | [issue-19-us-4-4-security-hardening-payload-limits-sensitive-data-redaction.md](file:///D:/Sources/my-llm-gateway/github-issues/issue-19-us-4-4-security-hardening-payload-limits-sensitive-data-redaction.md) |
+| 20 | **[US-5.1] Tailscale Node Configuration & Access Control (ACL/Grants)** | M4: Private Remote Access | `milestone-4`, `networking`, `tailscale` | [issue-20-us-5-1-tailscale-node-configuration-access-control-acl-grants.md](file:///D:/Sources/my-llm-gateway/github-issues/issue-20-us-5-1-tailscale-node-configuration-access-control-acl-grants.md) |
+| 21 | **[US-5.2] Tailscale Serve Private HTTPS Ingress Setup** | M4: Private Remote Access | `milestone-4`, `networking`, `tailscale` | [issue-21-us-5-2-tailscale-serve-private-https-ingress-setup.md](file:///D:/Sources/my-llm-gateway/github-issues/issue-21-us-5-2-tailscale-serve-private-https-ingress-setup.md) |
+| 22 | **[US-5.3] Network Exposure Audit & Port Lockdown Verification** | M4: Private Remote Access | `milestone-4`, `networking`, `tailscale` | [issue-22-us-5-3-network-exposure-audit-port-lockdown-verification.md](file:///D:/Sources/my-llm-gateway/github-issues/issue-22-us-5-3-network-exposure-audit-port-lockdown-verification.md) |
+| 23 | **[US-6.1] OpenAI Python SDK & Standard Client Verification** | M5: Client Compatibility | `milestone-5`, `client-testing` | [issue-23-us-6-1-openai-python-sdk-standard-client-verification.md](file:///D:/Sources/my-llm-gateway/github-issues/issue-23-us-6-1-openai-python-sdk-standard-client-verification.md) |
+| 24 | **[US-6.2] IDE AI Assistant Integrations (Continue & Cline)** | M5: Client Compatibility | `milestone-5`, `client-testing` | [issue-24-us-6-2-ide-ai-assistant-integrations-continue-cline.md](file:///D:/Sources/my-llm-gateway/github-issues/issue-24-us-6-2-ide-ai-assistant-integrations-continue-cline.md) |
+| 25 | **[US-6.3] GitHub Copilot Integration & Capability Assessment** | M5: Client Compatibility | `milestone-5`, `client-testing` | [issue-25-us-6-3-github-copilot-integration-capability-assessment.md](file:///D:/Sources/my-llm-gateway/github-issues/issue-25-us-6-3-github-copilot-integration-capability-assessment.md) |
+| 26 | **[US-6.4] Advanced Capabilities Verification (Tool Calling & JSON Mode)** | M5: Client Compatibility | `milestone-5`, `client-testing` | [issue-26-us-6-4-advanced-capabilities-verification-tool-calling-json-mode.md](file:///D:/Sources/my-llm-gateway/github-issues/issue-26-us-6-4-advanced-capabilities-verification-tool-calling-json-mode.md) |
+| 27 | **[US-6.5] Fault Injection, Timeout Handling & Error Propagation** | M5: Client Compatibility | `milestone-5`, `client-testing` | [issue-27-us-6-5-fault-injection-timeout-handling-error-propagation.md](file:///D:/Sources/my-llm-gateway/github-issues/issue-27-us-6-5-fault-injection-timeout-handling-error-propagation.md) |
+| 28 | **[US-7.1] Prometheus Monitoring Stack & LiteLLM Metrics Scraping** | M6: Monitoring & Ops Hardening | `milestone-6`, `monitoring`, `automation` | [issue-28-us-7-1-prometheus-monitoring-stack-litellm-metrics-scraping.md](file:///D:/Sources/my-llm-gateway/github-issues/issue-28-us-7-1-prometheus-monitoring-stack-litellm-metrics-scraping.md) |
+| 29 | **[US-7.2] Windows Host & NVIDIA GPU Telemetry Exporters** | M6: Monitoring & Ops Hardening | `milestone-6`, `monitoring`, `automation` | [issue-29-us-7-2-windows-host-nvidia-gpu-telemetry-exporters.md](file:///D:/Sources/my-llm-gateway/github-issues/issue-29-us-7-2-windows-host-nvidia-gpu-telemetry-exporters.md) |
+| 30 | **[US-7.3] Grafana Operational Dashboard & Alerting Rules** | M6: Monitoring & Ops Hardening | `milestone-6`, `monitoring`, `automation` | [issue-30-us-7-3-grafana-operational-dashboard-alerting-rules.md](file:///D:/Sources/my-llm-gateway/github-issues/issue-30-us-7-3-grafana-operational-dashboard-alerting-rules.md) |
+| 31 | **[US-7.4] Automated System Boot Lifecycle & Process Supervision** | M6: Monitoring & Ops Hardening | `milestone-6`, `monitoring`, `automation` | [issue-31-us-7-4-automated-system-boot-lifecycle-process-supervision.md](file:///D:/Sources/my-llm-gateway/github-issues/issue-31-us-7-4-automated-system-boot-lifecycle-process-supervision.md) |
+| 32 | **[US-7.5] PostgreSQL Database Backup & Disaster Recovery Automation** | M6: Monitoring & Ops Hardening | `milestone-6`, `monitoring`, `automation` | [issue-32-us-7-5-postgresql-database-backup-disaster-recovery-automation.md](file:///D:/Sources/my-llm-gateway/github-issues/issue-32-us-7-5-postgresql-database-backup-disaster-recovery-automation.md) |
+| 33 | **[US-8.1] Automated End-to-End Acceptance Test Suite (PowerShell)** | *(None)* | `qa`, `migration` | [issue-33-us-8-1-automated-end-to-end-acceptance-test-suite-powershell.md](file:///D:/Sources/my-llm-gateway/github-issues/issue-33-us-8-1-automated-end-to-end-acceptance-test-suite-powershell.md) |
+| 34 | **[US-8.2] Ubuntu Server 24.04 LTS Portability Audit & Decoupling Checklist** | *(None)* | `qa`, `migration` | [issue-34-us-8-2-ubuntu-server-24-04-lts-portability-audit-decoupling-checklist.md](file:///D:/Sources/my-llm-gateway/github-issues/issue-34-us-8-2-ubuntu-server-24-04-lts-portability-audit-decoupling-checklist.md) |

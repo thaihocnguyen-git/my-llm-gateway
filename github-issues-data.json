@@ -1,0 +1,333 @@
+[
+  {
+    "title": "[Epic] M1: Local Inference Engine Setup & Benchmarking",
+    "milestone": "M1: Local Inference Engine",
+    "labels": [
+      "epic",
+      "milestone-1",
+      "performance"
+    ],
+    "body": "## Epic Overview\nImplement Milestone 1 (M1) from [local-llm-gateway-design-latest.md](local-llm-gateway-design-latest.md): Install and validate local inference runtime (Ollama) with full NVIDIA GPU offload on Windows host `DESKTOP-E9DFIES`.\n\n### Included Stories\n- [ ] #US-2.1: Ollama Installation & Windows Service Lifecycle\n- [ ] #US-2.2: Initial Model Download & Tag Verification (`qwen2.5:7b`, `qwen2.5-coder:7b`)\n- [ ] #US-2.3: GPU Acceleration, Memory Footprint & Latency Benchmarking\n\n### Milestone Acceptance Criteria\n- [ ] Ollama successfully serves local requests on `127.0.0.1:11434`\n- [ ] GPU acceleration confirmed (100% layer offload to RTX 3060 12GB)\n- [ ] Baseline general and coding models benchmarked for TTFT and TPS"
+  },
+  {
+    "title": "[Epic] M2: Gateway Deployment & Core Routing Engine",
+    "milestone": "M2: Gateway Deployment",
+    "labels": [
+      "epic",
+      "milestone-2",
+      "gateway"
+    ],
+    "body": "## Epic Overview\nImplement Milestone 2 (M2): Deploy PostgreSQL in Docker and LiteLLM Proxy natively on Windows to provide model routing, logical abstraction, and OpenAI-compatible API endpoints.\n\n### Included Stories\n- [ ] #US-3.1: PostgreSQL Persistent Database Deployment via Docker Compose\n- [ ] #US-3.2: LiteLLM Proxy Native Windows Installation & Environment Setup\n- [ ] #US-3.3: Model Mapping, Abstraction & Provider Configuration\n- [ ] #US-3.4: OpenAI API Compatibility & Server-Sent Events (SSE) Streaming\n\n### Milestone Acceptance Criteria\n- [ ] OpenAI SDK communicates with local models through LiteLLM\n- [ ] Logical model aliases (`general`, `coding`) resolve to Ollama models\n- [ ] Token-by-token streaming works end-to-end"
+  },
+  {
+    "title": "[Epic] M3: Identity, Authorization & Gateway Security Hardening",
+    "milestone": "M3: Auth & Security Hardening",
+    "labels": [
+      "epic",
+      "milestone-3",
+      "security"
+    ],
+    "body": "## Epic Overview\nImplement Milestone 3 (M3): Enforce multi-tier security, separate administrative credentials from client credentials, generate virtual keys, and enforce model allowlists and rate limits.\n\n### Included Stories\n- [ ] #US-4.1: Master Key & Administrative Credential Isolation\n- [ ] #US-4.2: Client Virtual API Key Lifecycle Management\n- [ ] #US-4.3: Per-Key Model Access Control, Rate Limiting & Concurrency Controls\n- [ ] #US-4.4: Security Hardening, Payload Limits & Sensitive Data Redaction\n\n### Milestone Acceptance Criteria\n- [ ] Unauthorized requests rejected with HTTP 401\n- [ ] Client keys restricted from administrative endpoints\n- [ ] Model restrictions and rate limits enforced"
+  },
+  {
+    "title": "[Epic] M4: Private Remote Access via Tailscale",
+    "milestone": "M4: Private Remote Access",
+    "labels": [
+      "epic",
+      "milestone-4",
+      "networking"
+    ],
+    "body": "## Epic Overview\nImplement Milestone 4 (M4): Configure Tailscale VPN mesh network and Tailscale Serve HTTPS termination to allow secure remote access from authorized devices without opening public router ports.\n\n### Included Stories\n- [ ] #US-5.1: Tailscale Node Configuration & Access Control (ACL/Grants)\n- [ ] #US-5.2: Tailscale Serve Private HTTPS Ingress Setup\n- [ ] #US-5.3: Network Exposure Audit & Port Lockdown Verification\n\n### Milestone Acceptance Criteria\n- [ ] Authorized tailnet devices can reach gateway via `https://<device>.<tailnet>.ts.net/v1`\n- [ ] Non-tailnet and direct LAN access to raw ports (11434, 5432, 4000) are blocked"
+  },
+  {
+    "title": "[Epic] M5: Client Integration & Upstream Robustness",
+    "milestone": "M5: Client Compatibility",
+    "labels": [
+      "epic",
+      "milestone-5",
+      "client-testing"
+    ],
+    "body": "## Epic Overview\nImplement Milestone 5 (M5): Validate client integrations (OpenAI SDK, Continue, Cline, Copilot CLI), verify tool-calling / structured JSON outputs, and harden upstream failure recovery.\n\n### Included Stories\n- [ ] #US-6.1: OpenAI Python SDK & Standard Client Verification\n- [ ] #US-6.2: IDE AI Assistant Integrations (Continue & Cline)\n- [ ] #US-6.3: GitHub Copilot Integration & Capability Assessment\n- [ ] #US-6.4: Advanced Capabilities Verification (Tool Calling & JSON Mode)\n- [ ] #US-6.5: Fault Injection, Timeout Handling & Error Propagation\n\n### Milestone Acceptance Criteria\n- [ ] Clients operate without custom inference code\n- [ ] Tool calling and JSON mode verified on target models\n- [ ] Upstream failures produce controlled HTTP error codes"
+  },
+  {
+    "title": "[Epic] M6: Observability, Telemetry & Operational Lifecycle",
+    "milestone": "M6: Monitoring & Ops Hardening",
+    "labels": [
+      "epic",
+      "milestone-6",
+      "monitoring"
+    ],
+    "body": "## Epic Overview\nImplement Milestone 6 (M6): Deploy Prometheus & Grafana in Docker, configure host & GPU telemetry, set up automated Windows boot recovery, and configure database backups.\n\n### Included Stories\n- [ ] #US-7.1: Prometheus Monitoring Stack & LiteLLM Metrics Scraping\n- [ ] #US-7.2: Windows Host & NVIDIA GPU Telemetry Exporters\n- [ ] #US-7.3: Grafana Operational Dashboard & Alerting Rules\n- [ ] #US-7.4: Automated System Boot Lifecycle & Process Supervision\n- [ ] #US-7.5: PostgreSQL Database Backup & Disaster Recovery Automation\n\n### Milestone Acceptance Criteria\n- [ ] Dashboard visualizes API traffic, GPU VRAM/temperature, host metrics, and latency\n- [ ] Alerts trigger on service failure\n- [ ] Automated recovery verified after host restart"
+  },
+  {
+    "title": "[US-1.1] Project Directory Structure & Version Control Setup",
+    "milestone": null,
+    "labels": [
+      "setup",
+      "devops"
+    ],
+    "body": "## User Story Statement\n- **Role:** As a DevOps engineer / Developer\n- **Goal:** I want to establish a clean, standardized repository structure, gitignore, and configuration templates\n- **Benefit:** So that all service configs, automation scripts, and deployment files are versioned securely without risking credential exposure.\n\n#### Technical Scope & Context\nEstablish the repository hierarchy defined in ADR §12. Ensure `.gitignore` ignores `.env`, private keys, secrets, database data files, log dumps, and model caches. Create `.env.example` defining all required configuration variables without real secrets.\n\n#### Detailed Tasks\n1. Initialize Git repository in `D:\\Sources\\my-llm-gateway` (if not already initialized).\n2. Create directories:\n   - `config/litellm/`\n   - `config/monitoring/grafana/`\n   - `deployment/postgres/`\n   - `scripts/windows/`\n   - `scripts/linux/`\n   - `tests/`\n3. Create `.gitignore` to exclude `.env`, `*.log`, `*.db`, `postgres_data/`, `certs/`, and credentials.\n4. Create `.env.example` containing placeholders: `LITELLM_MASTER_KEY`, `LITELLM_SALT_KEY`, `DATABASE_URL`, `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB`, `TAILSCALE_HOSTNAME`.\n5. Create initial `README.md` documenting project structure, prerequisites, and quick links.\n\n#### Acceptance Criteria\n- **Scenario 1: Clean Git Scaffolding**\n  - **Given** the project workspace directory `D:\\Sources\\my-llm-gateway`\n  - **When** `git status` is executed\n  - **Then** all directories and template files exist, and untracked secret files are properly ignored.\n- **Scenario 2: Sensitive Information Protection**\n  - **Given** a newly created `.env` file containing test secrets\n  - **When** `git status` or `git add .` is executed\n  - **Then** Git must ignore `.env` and prevent committing sensitive material.\n\n#### Definition of Done\n- Directory structure matches ADR §12.\n- `.gitignore` and `.env.example` are committed to the repository.\n\n---\n\n---\n*Generated from [tasks-breakdown-user-stories.md](tasks-breakdown-user-stories.md)*"
+  },
+  {
+    "title": "[US-1.2] Host Hardware, GPU Drivers & Container Runtime Verification",
+    "milestone": null,
+    "labels": [
+      "setup",
+      "devops"
+    ],
+    "body": "## User Story Statement\n- **Role:** As a Systems Administrator\n- **Goal:** I want to verify that the host OS, NVIDIA display drivers, CUDA runtime, and Docker Desktop are operational\n- **Benefit:** So that the machine is confirmed capable of running hardware-accelerated local inference and Dockerized supporting services.\n\n#### Technical Scope & Context\nConfirm `DESKTOP-E9DFIES` environment: Intel i5-11400F, 32 GB RAM, NVIDIA GeForce RTX 3060 12GB VRAM. Verify NVIDIA driver (supports CUDA >= 12.0), PowerShell 7 or Windows PowerShell 5.1+, and Docker Desktop with WSL2 backend.\n\n#### Detailed Tasks\n1. Run `nvidia-smi` to confirm GPU detection, VRAM capacity (12,288 MB), and driver/CUDA versions.\n2. Verify Docker Desktop installation and start status (`docker --version`, `docker compose version`).\n3. Verify Docker WSL2 backend memory limit and container execution (`docker run --rm hello-world`).\n4. Document the baseline driver and system info in `scripts/windows/health-check.ps1` host check function.\n\n#### Acceptance Criteria\n- **Scenario 1: GPU and Driver Status**\n  - **Given** Windows host `DESKTOP-E9DFIES`\n  - **When** running `nvidia-smi`\n  - **Then** NVIDIA GeForce RTX 3060 with 12 GB VRAM is detected, and CUDA version is >= 12.2.\n- **Scenario 2: Docker Engine Readiness**\n  - **Given** Docker Desktop is running\n  - **When** executing `docker compose version`\n  - **Then** Docker Compose v2.x returns success without daemon communication errors.\n\n#### Definition of Done\n- GPU details and driver versions logged.\n- Docker Desktop verified functional with hello-world test.\n\n---\n\n## Epic 2 (M1): Local Inference Engine Setup & Benchmarking\n\n---\n*Generated from [tasks-breakdown-user-stories.md](tasks-breakdown-user-stories.md)*"
+  },
+  {
+    "title": "[US-2.1] Ollama Installation & Windows Service Lifecycle",
+    "milestone": "M1: Local Inference Engine",
+    "labels": [
+      "milestone-1",
+      "performance",
+      "ollama"
+    ],
+    "body": "## User Story Statement\n- **Role:** As an AI Platform Engineer\n- **Goal:** I want to install and configure Ollama natively on Windows bound exclusively to localhost (`127.0.0.1:11434`)\n- **Benefit:** So that local LLM models can run with low overhead and full GPU acceleration without exposing the raw inference daemon to the network.\n\n#### Technical Scope & Context\nOllama must run as a native Windows process. By default, Ollama binds to `127.0.0.1:11434`. Explicitly ensure `OLLAMA_HOST` is `127.0.0.1:11434` or left default (loopback only). Verify model storage directory path (`OLLAMA_MODELS`) is configured on a drive with sufficient storage (e.g. `D:\\OllamaModels` or default `%USERPROFILE%\\.ollama\\models`).\n\n#### Detailed Tasks\n1. Download and install official Ollama for Windows.\n2. Verify Ollama executable location and ensure it is accessible in PATH (`ollama --version`).\n3. Configure environment variable `OLLAMA_MODELS` if model storage needs to be designated to a dedicated partition.\n4. Verify port binding using `netstat -ano | findstr 11434` or `Get-NetTCPConnection -LocalPort 11434` to guarantee binding is loopback only (`127.0.0.1`), not `0.0.0.0`.\n5. Create PowerShell lifecycle helper functions in `scripts/windows/start.ps1` and `scripts/windows/stop.ps1` to start/stop Ollama.\n\n#### Acceptance Criteria\n- **Scenario 1: Ollama Service Loopback Binding**\n  - **Given** Ollama is running on the host\n  - **When** inspecting local listeners on port 11434\n  - **Then** the local address is `127.0.0.1:11434` (or `[::1]:11434`) and NOT `0.0.0.0:11434`.\n- **Scenario 2: Ollama Local API Availability**\n  - **Given** Ollama daemon is active\n  - **When** sending `Invoke-RestMethod http://127.0.0.1:11434/api/tags`\n  - **Then** HTTP 200 is returned with a JSON object containing the `models` array.\n\n#### Definition of Done\n- Ollama runs natively, bound to loopback only.\n- Basic API responds on port 11434.\n\n---\n\n---\n*Generated from [tasks-breakdown-user-stories.md](tasks-breakdown-user-stories.md)*"
+  },
+  {
+    "title": "[US-2.2] Initial Model Download & Tag Verification",
+    "milestone": "M1: Local Inference Engine",
+    "labels": [
+      "milestone-1",
+      "performance",
+      "ollama"
+    ],
+    "body": "## User Story Statement\n- **Role:** As an AI Engineer\n- **Goal:** I want to download and verify the baseline models for general reasoning and code assistance\n- **Benefit:** So that the inference engine possesses the target quantized models fitting within the 12GB VRAM constraint.\n\n#### Technical Scope & Context\nDownload selected baseline models:\n- General model: `qwen2.5:7b` or `qwen2.5:8b` (quantized 4-bit / Q4_K_M)\n- Coding model: `qwen2.5-coder:7b` (quantized Q4_K_M)\nTotal weights per model ~4.5 GB to 5.5 GB, leaving 5–6 GB of VRAM headroom for KV cache and context window (up to 8k-16k tokens) on the RTX 3060 12GB.\n\n#### Detailed Tasks\n1. Execute `ollama pull qwen2.5:7b` (or chosen general model baseline).\n2. Execute `ollama pull qwen2.5-coder:7b`.\n3. Verify models appear in local registry with `ollama list`.\n4. Inspect model parameters and template metadata using `ollama show --modelfile qwen2.5-coder:7b`.\n\n#### Acceptance Criteria\n- **Scenario 1: Model Pull Completion**\n  - **Given** an active internet connection on the host\n  - **When** `ollama pull qwen2.5-coder:7b` finishes\n  - **Then** `ollama list` output includes `qwen2.5-coder:7b` with status OK and valid size (~4.7 GB).\n- **Scenario 2: Model Query Execution**\n  - **Given** the downloaded models\n  - **When** running `ollama run qwen2.5-coder:7b \"Write a Python fibonacci generator\"`\n  - **Then** the response is generated without error and outputs valid Python code.\n\n#### Definition of Done\n- Both baseline models downloaded and verified via CLI inference.\n\n---\n\n---\n*Generated from [tasks-breakdown-user-stories.md](tasks-breakdown-user-stories.md)*"
+  },
+  {
+    "title": "[US-2.3] GPU Acceleration, Memory Footprint & Latency Benchmarking",
+    "milestone": "M1: Local Inference Engine",
+    "labels": [
+      "milestone-1",
+      "performance",
+      "ollama"
+    ],
+    "body": "## User Story Statement\n- **Role:** As a Performance Engineer\n- **Goal:** I want to benchmark VRAM consumption, time-to-first-token (TTFT), and generation speed (tokens/sec)\n- **Benefit:** So that we confirm 100% GPU offloading, zero CPU fallback degradation, and establish baseline performance metrics.\n\n#### Technical Scope & Context\nWhen running models on Ollama, verify all layers are offloaded to CUDA (`CUDA0`). Track VRAM with `nvidia-smi` before, during, and after inference. Benchmark with context sizes of 1k, 4k, and 8k tokens.\n\n#### Detailed Tasks\n1. Create a PowerShell benchmark script `scripts/windows/benchmark-models.ps1` that sends timed API requests to `http://127.0.0.1:11434/api/generate`.\n2. Measure:\n   - Peak VRAM utilization via `nvidia-smi --query-gpu=memory.used,memory.free --format=csv`.\n   - Time to first token (TTFT).\n   - Sustained generation speed (tokens per second / TPS).\n3. Validate that 100% of layers (`gpu_layers: all`) are loaded in GPU VRAM with no system RAM swapping.\n4. Document the benchmark baseline in `docs/benchmark-results-windows.md`.\n\n#### Acceptance Criteria\n- **Scenario 1: 100% GPU Offload Verification**\n  - **Given** model `qwen2.5-coder:7b` is actively loaded\n  - **When** monitoring Ollama logs / `nvidia-smi` during generation\n  - **Then** GPU utilization spikes, VRAM consumption increases by ~5.0 - 6.5 GB, and host CPU usage remains low.\n- **Scenario 2: Performance Threshold Compliance**\n  - **Given** single-stream generation on RTX 3060 12GB\n  - **When** generating a 500-token response\n  - **Then** generation speed achieves >= 25 tokens/second with TTFT < 800ms.\n\n#### Definition of Done\n- Benchmark results documented; 100% GPU offloading confirmed without out-of-memory (OOM) errors.\n\n---\n\n## Epic 3 (M2): Gateway Deployment & Core Routing Engine\n\n---\n*Generated from [tasks-breakdown-user-stories.md](tasks-breakdown-user-stories.md)*"
+  },
+  {
+    "title": "[US-3.1] PostgreSQL Persistent Database Deployment via Docker Compose",
+    "milestone": "M2: Gateway Deployment",
+    "labels": [
+      "milestone-2",
+      "gateway",
+      "litellm"
+    ],
+    "body": "## User Story Statement\n- **Role:** As a Database Administrator / DevOps Engineer\n- **Goal:** I want to deploy PostgreSQL in a Docker container with persistent volumes on an isolated internal network\n- **Benefit:** So that LiteLLM Proxy can persist virtual keys, usage tracking, and audit data reliably across restarts.\n\n#### Technical Scope & Context\nDeploy PostgreSQL 16 (pinned version, e.g., `postgres:16-alpine`) using `deployment/compose.yaml`. The container must use a named Docker volume (`postgres_data`) for persistence. Port 5432 should bind ONLY to Docker internal network or `127.0.0.1:5432` on the host; it must NEVER be published to `0.0.0.0` or accessible externally.\n\n#### Detailed Tasks\n1. Author `deployment/compose.yaml` with the `postgres` service:\n   - Image: `postgres:16-alpine`\n   - Volume: `postgres_data:/var/lib/postgresql/data`\n   - Environment: `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB` read from `.env`\n   - Port binding: `127.0.0.1:5432:5432` (restricted to localhost)\n   - Healthcheck: `pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB`\n   - Restart policy: `unless-stopped`\n2. Create initialization scripts in `deployment/postgres/init.sql` if required.\n3. Start the container with `docker compose -f deployment/compose.yaml up -d postgres`.\n4. Validate health check status and data persistence across container restart.\n\n#### Acceptance Criteria\n- **Scenario 1: PostgreSQL Port Exposure Restriction**\n  - **Given** the PostgreSQL container is running\n  - **When** querying listening ports on the host\n  - **Then** port 5432 is bound strictly to `127.0.0.1:5432` and cannot be reached from other LAN IPs.\n- **Scenario 2: Persistence Across Restarts**\n  - **Given** PostgreSQL running with persistent volume\n  - **When** executing `docker compose -f deployment/compose.yaml restart postgres`\n  - **Then** all database tables, schemas, and previously inserted records remain intact.\n\n#### Definition of Done\n- `deployment/compose.yaml` implemented, database healthy, data verified persistent across container restarts.\n\n---\n\n---\n*Generated from [tasks-breakdown-user-stories.md](tasks-breakdown-user-stories.md)*"
+  },
+  {
+    "title": "[US-3.2] LiteLLM Proxy Native Windows Installation & Environment Setup",
+    "milestone": "M2: Gateway Deployment",
+    "labels": [
+      "milestone-2",
+      "gateway",
+      "litellm"
+    ],
+    "body": "## User Story Statement\n- **Role:** As a Backend Engineer\n- **Goal:** I want to install and configure LiteLLM Proxy natively on Windows using Python\n- **Benefit:** So that LiteLLM can connect seamlessly to both local Ollama (`127.0.0.1:11434`) and local PostgreSQL (`127.0.0.1:5432`) without complex container-to-host bridge networking.\n\n#### Technical Scope & Context\nPer ADR §6, running LiteLLM natively on Windows avoids exposing Ollama on external interfaces. Install LiteLLM Proxy via a dedicated Python virtual environment (`.venv`) with pinned version (e.g. `litellm[proxy]~=1.40`). The proxy runs on `127.0.0.1:4000`.\n\n#### Detailed Tasks\n1. Create a Python virtual environment: `python -m venv .venv`.\n2. Pin LiteLLM and proxy dependencies in `requirements.txt` (e.g., `litellm[proxy]>=1.40.0`, `psycopg2-binary`, `uvicorn`).\n3. Install dependencies inside `.venv`.\n4. Create `scripts/windows/run-litellm.ps1` to activate `.venv` and run `litellm --config config/litellm/config.yaml --port 4000 --host 127.0.0.1`.\n5. Test startup and verify health endpoint `http://127.0.0.1:4000/health`.\n\n#### Acceptance Criteria\n- **Scenario 1: LiteLLM Localhost Listener**\n  - **Given** LiteLLM Proxy is launched\n  - **When** inspecting active sockets on port 4000\n  - **Then** it listens strictly on `127.0.0.1:4000`.\n- **Scenario 2: Gateway Health Probe**\n  - **Given** LiteLLM Proxy is running\n  - **When** sending `GET http://127.0.0.1:4000/health`\n  - **Then** returns HTTP 200 OK.\n\n#### Definition of Done\n- LiteLLM installed in dedicated virtualenv, runnable via script, bound to loopback port 4000.\n\n---\n\n---\n*Generated from [tasks-breakdown-user-stories.md](tasks-breakdown-user-stories.md)*"
+  },
+  {
+    "title": "[US-3.3] Model Mapping, Abstraction & Provider Configuration",
+    "milestone": "M2: Gateway Deployment",
+    "labels": [
+      "milestone-2",
+      "gateway",
+      "litellm"
+    ],
+    "body": "## User Story Statement\n- **Role:** As an API Architect\n- **Goal:** I want to configure LiteLLM model routing to map logical model names (`general`, `coding`) to internal Ollama tags\n- **Benefit:** So that client applications use stable model names that do not break when underlying Ollama model tags or versions change.\n\n#### Technical Scope & Context\nImplement `config/litellm/config.yaml` as defined in ADR §8. Map:\n- `model_name: general` -> `ollama_chat/qwen2.5:7b` (at `http://127.0.0.1:11434`)\n- `model_name: coding` -> `ollama_chat/qwen2.5-coder:7b` (at `http://127.0.0.1:11434`)\nConfigure `keep_alive: 10m` to prevent cold model unload between frequent developer queries.\n\n#### Detailed Tasks\n1. Create `config/litellm/config.yaml` specifying `model_list` with logical aliases and provider settings.\n2. Link database connection string via `general_settings.database_url: os.environ/DATABASE_URL`.\n3. Configure `master_key: os.environ/LITELLM_MASTER_KEY`.\n4. Verify model discovery endpoint `/v1/models` lists `general` and `coding`.\n\n#### Acceptance Criteria\n- **Scenario 1: Model Discovery Endpoint**\n  - **Given** LiteLLM Proxy is initialized with the config\n  - **When** sending `GET http://127.0.0.1:4000/v1/models` with master key authorization\n  - **Then** the response JSON contains model objects with `id: \"general\"` and `id: \"coding\"`.\n- **Scenario 2: Logical Routing to Ollama**\n  - **Given** a request sent to `/v1/chat/completions` with `\"model\": \"coding\"`\n  - **When** LiteLLM forwards the request\n  - **Then** Ollama receives the request targeted at `qwen2.5-coder:7b` and returns the inference output.\n\n#### Definition of Done\n- Logical aliases configured, verifiable via `/v1/models` and routed correctly to Ollama.\n\n---\n\n---\n*Generated from [tasks-breakdown-user-stories.md](tasks-breakdown-user-stories.md)*"
+  },
+  {
+    "title": "[US-3.4] OpenAI API Compatibility & Server-Sent Events (SSE) Streaming",
+    "milestone": "M2: Gateway Deployment",
+    "labels": [
+      "milestone-2",
+      "gateway",
+      "litellm"
+    ],
+    "body": "## User Story Statement\n- **Role:** As a Software Engineer\n- **Goal:** I want to validate OpenAI-compatible Chat Completions with non-streaming and streaming (SSE) modes\n- **Benefit:** So that standard OpenAI client SDKs and UI harnesses receive responses token-by-token in real time.\n\n#### Technical Scope & Context\nVerify the `/v1/chat/completions` endpoint for both standard JSON responses and chunked SSE streaming (`\"stream\": true`). Test parameter compliance: `temperature`, `top_p`, `max_tokens`, `stop`.\n\n#### Detailed Tasks\n1. Create test script `tests/test-chat.ps1` for non-streaming completions.\n2. Create test script `tests/test-streaming.ps1` that verifies SSE streaming chunks (`data: {...}\\n\\n`) and final `data: [DONE]`.\n3. Verify response schema matches standard OpenAI Chat Completion specification.\n\n#### Acceptance Criteria\n- **Scenario 1: Non-Streaming Completion**\n  - **Given** a valid POST to `/v1/chat/completions` with `\"model\": \"general\"`, `\"stream\": false`\n  - **When** the model finishes generation\n  - **Then** HTTP 200 is returned with JSON containing `choices[0].message.content` and usage stats.\n- **Scenario 2: Streaming (SSE) Completion**\n  - **Given** a valid POST to `/v1/chat/completions` with `\"model\": \"coding\"`, `\"stream\": true`\n  - **When** the response begins streaming\n  - **Then** the `Content-Type` is `text/event-stream`, tokens arrive incrementally, and stream terminates with `data: [DONE]`.\n\n#### Definition of Done\n- Both non-streaming and streaming tests pass against the local LiteLLM gateway.\n\n---\n\n## Epic 4 (M3): Identity, Authorization & Gateway Security Hardening\n\n---\n*Generated from [tasks-breakdown-user-stories.md](tasks-breakdown-user-stories.md)*"
+  },
+  {
+    "title": "[US-4.1] Master Key & Administrative Credential Isolation",
+    "milestone": "M3: Auth & Security Hardening",
+    "labels": [
+      "milestone-3",
+      "security",
+      "auth"
+    ],
+    "body": "## User Story Statement\n- **Role:** As a Security Engineer\n- **Goal:** I want to generate cryptographically strong master and salt keys and protect administrative endpoints\n- **Benefit:** So that only authorized administration scripts can manage keys, while ordinary clients cannot access management APIs.\n\n#### Technical Scope & Context\nGenerate secure random strings for `LITELLM_MASTER_KEY` (e.g. `sk-admin-...`) and `LITELLM_SALT_KEY` using crypto random generation (32+ bytes). Ensure administrative operations (`/key/generate`, `/key/delete`, `/model/new`) require the master key.\n\n#### Detailed Tasks\n1. Create a PowerShell key generation script `scripts/windows/generate-secrets.ps1` utilizing `[System.Security.Cryptography.RandomNumberGenerator]`.\n2. Populate `.env` with generated `LITELLM_MASTER_KEY` and `LITELLM_SALT_KEY`.\n3. Verify that requests without the master key to `/key/generate` are rejected with HTTP 401 or 403.\n\n#### Acceptance Criteria\n- **Scenario 1: Administrative Endpoint Protection**\n  - **Given** an unauthenticated client or a client using a standard virtual key\n  - **When** calling `POST /key/generate`\n  - **Then** the request is rejected with HTTP 401 Unauthorized or HTTP 403 Forbidden.\n- **Scenario 2: Valid Master Key Operation**\n  - **Given** the master key supplied as Bearer token\n  - **When** calling `POST /key/generate`\n  - **Then** the key generation operation succeeds.\n\n#### Definition of Done\n- Master key generated, saved to `.env`, and verified to restrict administrative endpoints.\n\n---\n\n---\n*Generated from [tasks-breakdown-user-stories.md](tasks-breakdown-user-stories.md)*"
+  },
+  {
+    "title": "[US-4.2] Client Virtual API Key Lifecycle Management",
+    "milestone": "M3: Auth & Security Hardening",
+    "labels": [
+      "milestone-3",
+      "security",
+      "auth"
+    ],
+    "body": "## User Story Statement\n- **Role:** As an API Administrator\n- **Goal:** I want to generate and manage dedicated virtual keys for distinct clients (`personal-dev`, `coding-agent`, `mobile-client`)\n- **Benefit:** So that individual clients have isolated credentials that can be revoked or rotated independently without affecting others.\n\n#### Technical Scope & Context\nLiteLLM provides key management endpoints (`/key/generate`, `/key/info`, `/key/delete`). Implement a management script `scripts/windows/manage-keys.ps1` supporting actions: create, list, inspect, and revoke.\n\n#### Detailed Tasks\n1. Build `scripts/windows/manage-keys.ps1` wrapping the LiteLLM key management REST API.\n2. Generate virtual keys for defined clients:\n   - `personal-dev`\n   - `coding-agent`\n   - `mobile-client`\n3. Store key metadata (alias, creation date, expiry date: 90 days).\n4. Verify key revocation functionality.\n\n#### Acceptance Criteria\n- **Scenario 1: Virtual Key Creation**\n  - **Given** the master key\n  - **When** generating a virtual key with alias `personal-dev` and duration `90d`\n  - **Then** a virtual key starting with `sk-` is created and stored in PostgreSQL with appropriate expiry.\n- **Scenario 2: Revoked Key Rejection**\n  - **Given** a previously valid virtual key that has been deleted or revoked\n  - **When** sending a chat completion request with that key\n  - **Then** the gateway immediately rejects the request with HTTP 401 Unauthorized.\n\n#### Definition of Done\n- Script `scripts/windows/manage-keys.ps1` functional; creation and revocation verified.\n\n---\n\n---\n*Generated from [tasks-breakdown-user-stories.md](tasks-breakdown-user-stories.md)*"
+  },
+  {
+    "title": "[US-4.3] Per-Key Model Access Control, Rate Limiting & Concurrency Controls",
+    "milestone": "M3: Auth & Security Hardening",
+    "labels": [
+      "milestone-3",
+      "security",
+      "auth"
+    ],
+    "body": "## User Story Statement\n- **Role:** As a Systems Administrator\n- **Goal:** I want to enforce per-key model permissions, rate limits (RPM), and global/per-key concurrency limits\n- **Benefit:** So that clients cannot access unauthorized models, flood the GPU, or cause OOM crashes.\n\n#### Technical Scope & Context\nIn LiteLLM, assign `models` allowlists to each key:\n- `coding-agent`: allowed `[\"coding\"]` only.\n- `mobile-client`: allowed `[\"general\"]` only.\n- `personal-dev`: allowed `[\"general\", \"coding\"]`.\nConfigure operational limits:\n- Max concurrency: 1–2 requests globally or per key.\n- RPM: 10 requests per minute per key.\n- Max tokens: 2048 generated tokens.\n\n#### Detailed Tasks\n1. Configure model allowlists during virtual key creation in `scripts/windows/manage-keys.ps1`.\n2. Configure rate limits (RPM/TPM) and max concurrency in `config/litellm/config.yaml` or key generation payload.\n3. Create automated test `tests/test-auth.ps1` testing:\n   - Request with unauthorized model name.\n   - Request exceeding rate limits or concurrency.\n\n#### Acceptance Criteria\n- **Scenario 1: Model Permission Enforcement**\n  - **Given** virtual key for `coding-agent` (allowed: `[\"coding\"]`)\n  - **When** attempting a completion request with `\"model\": \"general\"`\n  - **Then** LiteLLM rejects the request with HTTP 403 Forbidden or model access error.\n- **Scenario 2: Concurrency & Rate Limit Throttling**\n  - **Given** rate limit of 10 RPM\n  - **When** client sends 15 rapid requests in 10 seconds\n  - **Then** requests exceeding the limit receive HTTP 429 Too Many Requests.\n\n#### Definition of Done\n- Model allowlists and rate limits enforced and verified with automated tests.\n\n---\n\n---\n*Generated from [tasks-breakdown-user-stories.md](tasks-breakdown-user-stories.md)*"
+  },
+  {
+    "title": "[US-4.4] Security Hardening, Payload Limits & Sensitive Data Redaction",
+    "milestone": "M3: Auth & Security Hardening",
+    "labels": [
+      "milestone-3",
+      "security",
+      "auth"
+    ],
+    "body": "## User Story Statement\n- **Role:** As a Security Engineer\n- **Goal:** I want to sanitize logs, set request timeouts and payload size limits, and redact credentials\n- **Benefit:** So that sensitive prompts or API keys are never exposed in log files, and malformed large payloads cannot crash the service.\n\n#### Technical Scope & Context\nLiteLLM configuration must enforce:\n- Request timeout: 300s (5 minutes).\n- Max payload body size: e.g. 10MB.\n- Log sanitization: redact `Authorization` headers.\n- Disable logging full prompts in production log files by default (`litellm_settings.drop_params: true` or custom logging redaction).\n\n#### Detailed Tasks\n1. Update `config/litellm/config.yaml` with timeouts, request body size limits, and logging levels.\n2. Verify that log files written to disk or terminal output do not print raw `sk-...` keys in plaintext.\n3. Test oversized payload rejection (HTTP 413).\n\n#### Acceptance Criteria\n- **Scenario 1: Credential Redaction in Logs**\n  - **Given** incoming requests containing `Authorization: Bearer sk-...`\n  - **When** checking LiteLLM log outputs\n  - **Then** the raw secret is redacted or masked, never logged in cleartext.\n- **Scenario 2: Request Timeout Enforcement**\n  - **Given** a downstream inference request hanging longer than configured timeout\n  - **When** the timeout threshold is breached\n  - **Then** the gateway aborts the connection and returns HTTP 504 Gateway Timeout.\n\n#### Definition of Done\n- Security settings in `config.yaml` active; credentials redacted from logs; payload limits tested.\n\n---\n\n## Epic 5 (M4): Private Remote Access via Tailscale\n\n---\n*Generated from [tasks-breakdown-user-stories.md](tasks-breakdown-user-stories.md)*"
+  },
+  {
+    "title": "[US-5.1] Tailscale Node Configuration & Access Control (ACL/Grants)",
+    "milestone": "M4: Private Remote Access",
+    "labels": [
+      "milestone-4",
+      "networking",
+      "tailscale"
+    ],
+    "body": "## User Story Statement\n- **Role:** As a Network / Security Engineer\n- **Goal:** I want to connect the Windows host to a private Tailscale network and enforce strict ACLs\n- **Benefit:** So that only authorized personal devices can route traffic to the host without any public internet exposure.\n\n#### Technical Scope & Context\nTailscale provides zero-trust mesh networking. The Windows host `DESKTOP-E9DFIES` joins the user's tailnet. In the Tailscale admin console, configure Tailscale Grants / ACLs so that only tagged personal devices can connect to the host on the HTTPS port.\n\n#### Detailed Tasks\n1. Verify Tailscale installation on Windows host and join the target tailnet (`tailscale up`).\n2. Record the MagicDNS hostname (e.g. `desktop-e9dfies.<tailnet>.ts.net`).\n3. Define Tailscale ACL policy in Tailscale admin console:\n   - Restrict inbound traffic to the gateway node to authorized personal user devices only.\n   - Deny all public access.\n4. Verify tailnet connectivity using `tailscale status` and `tailscale ping`.\n\n#### Acceptance Criteria\n- **Scenario 1: Tailnet Connectivity**\n  - **Given** Tailscale active on the host\n  - **When** running `tailscale status`\n  - **Then** the node is shown connected with a valid Tailscale IP and MagicDNS name.\n- **Scenario 2: Access Restriction to Authorized Devices**\n  - **Given** Tailscale ACL policy applied\n  - **When** an unauthorized device or external network attempts to route to the node\n  - **Then** network packets are dropped at the Tailscale wireguard layer.\n\n#### Definition of Done\n- Tailscale active, MagicDNS resolved, ACL policy documented and enforced.\n\n---\n\n---\n*Generated from [tasks-breakdown-user-stories.md](tasks-breakdown-user-stories.md)*"
+  },
+  {
+    "title": "[US-5.2] Tailscale Serve Private HTTPS Ingress Setup",
+    "milestone": "M4: Private Remote Access",
+    "labels": [
+      "milestone-4",
+      "networking",
+      "tailscale"
+    ],
+    "body": "## User Story Statement\n- **Role:** As a Systems Administrator\n- **Goal:** I want to configure Tailscale Serve to provide private HTTPS termination and reverse-proxy to `127.0.0.1:4000`\n- **Benefit:** So that remote clients have automatic valid TLS certificates on the tailnet without manual certificate renewal or public DNS exposure.\n\n#### Technical Scope & Context\nTailscale Serve automatically provisions Let's Encrypt certificates for the MagicDNS domain inside the private tailnet. It terminates TLS on port 443 and forwards requests to LiteLLM at `http://127.0.0.1:4000`.\n\n#### Detailed Tasks\n1. Enable Tailscale HTTPS feature in Tailscale admin console if not already enabled.\n2. Execute command: `tailscale serve --bg https / http://127.0.0.1:4000` (or `tailscale serve --bg 443 127.0.0.1:4000`).\n3. Validate configuration with `tailscale serve status`.\n4. Test HTTPS connection from an authorized remote device: `curl -k https://<device>.<tailnet>.ts.net/health`.\n5. Script the setup command into `scripts/windows/setup-tailscale-serve.ps1`.\n\n#### Acceptance Criteria\n- **Scenario 1: Valid HTTPS Termination on Tailnet**\n  - **Given** Tailscale Serve running on the gateway host\n  - **When** an authorized device on the tailnet performs `GET https://<device>.<tailnet>.ts.net/health`\n  - **Then** the TLS handshake succeeds with a valid Tailscale certificate and returns HTTP 200.\n- **Scenario 2: Remote OpenAI Request over Tailscale HTTPS**\n  - **Given** client running on an authorized remote laptop on the tailnet\n  - **When** sending POST to `https://<device>.<tailnet>.ts.net/v1/chat/completions` with valid virtual key\n  - **Then** the request is forwarded to LiteLLM, executed on Ollama, and returned cleanly over HTTPS.\n\n#### Definition of Done\n- Tailscale Serve active in background, valid TLS verified from remote tailnet client.\n\n---\n\n---\n*Generated from [tasks-breakdown-user-stories.md](tasks-breakdown-user-stories.md)*"
+  },
+  {
+    "title": "[US-5.3] Network Exposure Audit & Port Lockdown Verification",
+    "milestone": "M4: Private Remote Access",
+    "labels": [
+      "milestone-4",
+      "networking",
+      "tailscale"
+    ],
+    "body": "## User Story Statement\n- **Role:** As a Security Auditor\n- **Goal:** I want to perform a comprehensive port and firewall audit to ensure raw ports (11434, 5432, 9090, 4000) are strictly inaccessible from LAN and WAN\n- **Benefit:** So that no attacker on the local Wi-Fi/LAN or internet can bypass authentication or query inference directly.\n\n#### Technical Scope & Context\nAudit all listening ports using Windows PowerShell / netstat / nmap. Verify:\n- Port 11434 (Ollama): `127.0.0.1` ONLY.\n- Port 5432 (Postgres): `127.0.0.1` / Docker internal ONLY.\n- Port 4000 (LiteLLM): `127.0.0.1` ONLY.\n- Port 9090 (Prometheus): `127.0.0.1` ONLY.\n- Port 3000 (Grafana): `127.0.0.1` ONLY.\n- Router: No port forwarding configured. Tailscale Funnel is DISABLED.\n\n#### Detailed Tasks\n1. Create `tests/audit-network-exposure.ps1`.\n2. Probe all sensitive ports from a separate machine on the same local LAN (Wi-Fi/Ethernet).\n3. Validate that Windows Firewall drops or rejects inbound connections to non-Tailscale ports.\n4. Verify `tailscale funnel status` confirms Funnel is inactive.\n\n#### Acceptance Criteria\n- **Scenario 1: LAN Direct Access Attempt to Ollama**\n  - **Given** another computer on the local home LAN (e.g. `192.168.1.x`)\n  - **When** attempting `curl http://<host-lan-ip>:11434/api/tags`\n  - **Then** the connection fails (Connection refused / timed out).\n- **Scenario 2: LAN Direct Access Attempt to LiteLLM**\n  - **Given** another computer on the local home LAN\n  - **When** attempting `curl http://<host-lan-ip>:4000/health`\n  - **Then** the connection fails (Connection refused / timed out).\n\n#### Definition of Done\n- Port audit completed and documented; zero exposed service ports on LAN/WAN.\n\n---\n\n## Epic 6 (M5): Client Integration & Upstream Robustness\n\n---\n*Generated from [tasks-breakdown-user-stories.md](tasks-breakdown-user-stories.md)*"
+  },
+  {
+    "title": "[US-6.1] OpenAI Python SDK & Standard Client Verification",
+    "milestone": "M5: Client Compatibility",
+    "labels": [
+      "milestone-5",
+      "client-testing"
+    ],
+    "body": "## User Story Statement\n- **Role:** As a Software Engineer / Client Developer\n- **Goal:** I want to connect to the gateway using the official OpenAI Python SDK and generic HTTP clients\n- **Benefit:** So that any standard OpenAI-compatible tooling can interface with our local models without bespoke adapters.\n\n#### Technical Scope & Context\nCreate a test harness in Python using the official `openai` Python SDK (v1.x). Set `base_url=\"https://<device>.<tailnet>.ts.net/v1\"` and `api_key=\"sk-...\"`.\n\n#### Detailed Tasks\n1. Create `tests/test-client-openai.py`.\n2. Implement test cases for:\n   - Client initialization with custom `base_url`.\n   - Simple text completion with `\"model\": \"general\"`.\n   - Streaming text completion with `\"model\": \"coding\"`.\n   - Exception handling on invalid API key (verifies `openai.AuthenticationError`).\n\n#### Acceptance Criteria\n- **Scenario 1: Python SDK Chat Completion**\n  - **Given** the OpenAI Python SDK configured with the Tailscale HTTPS base URL and virtual key\n  - **When** calling `client.chat.completions.create(model=\"general\", messages=[...])`\n  - **Then** the SDK returns a valid `ChatCompletion` object with content and usage.\n- **Scenario 2: Python SDK Streaming**\n  - **Given** streaming enabled (`stream=True`)\n  - **When** iterating `for chunk in response:`\n  - **Then** `chunk.choices[0].delta.content` delivers tokens smoothly.\n\n#### Definition of Done\n- Test script `test-client-openai.py` passes all test cases.\n\n---\n\n---\n*Generated from [tasks-breakdown-user-stories.md](tasks-breakdown-user-stories.md)*"
+  },
+  {
+    "title": "[US-6.2] IDE AI Assistant Integrations (Continue & Cline)",
+    "milestone": "M5: Client Compatibility",
+    "labels": [
+      "milestone-5",
+      "client-testing"
+    ],
+    "body": "## User Story Statement\n- **Role:** As a Software Developer\n- **Goal:** I want to configure Continue and Cline extensions in VS Code / JetBrains to use the local LLM gateway\n- **Benefit:** So that I can use local coding models directly in my IDE for code completion, refactoring, and inline chat.\n\n#### Technical Scope & Context\nConfigure IDE plugins using OpenAI-compatible configuration:\n- Base URL: `https://<device>.<tailnet>.ts.net/v1`\n- Model: `coding`\n- API Key: Virtual key for `coding-agent`\nDocument settings for both Continue (`config.json`) and Cline.\n\n#### Detailed Tasks\n1. Document Continue configuration snippet in `docs/client-setup/continue.md`.\n2. Document Cline configuration steps in `docs/client-setup/cline.md`.\n3. Test inline code completion and sidebar chat in VS Code using Continue.\n4. Verify memory and token limits during large context code explanations.\n\n#### Acceptance Criteria\n- **Scenario 1: Continue Extension Chat & Refactor**\n  - **Given** Continue configured with `api_base: https://<device>.<tailnet>.ts.net/v1` and `model: coding`\n  - **When** sending a code explanation or edit request in VS Code\n  - **Then** the response generates in the Continue sidebar with syntax highlighting.\n- **Scenario 2: Cline Tool Execution**\n  - **Given** Cline configured with the gateway endpoint\n  - **When** requesting code analysis\n  - **Then** Cline communicates with the gateway without communication protocol errors.\n\n#### Definition of Done\n- Configuration files tested and documented in `docs/client-setup/`.\n\n---\n\n---\n*Generated from [tasks-breakdown-user-stories.md](tasks-breakdown-user-stories.md)*"
+  },
+  {
+    "title": "[US-6.3] GitHub Copilot Integration & Capability Assessment",
+    "milestone": "M5: Client Compatibility",
+    "labels": [
+      "milestone-5",
+      "client-testing"
+    ],
+    "body": "## User Story Statement\n- **Role:** As a Developer / Tooling Specialist\n- **Goal:** I want to test and document GitHub Copilot CLI and Copilot custom model / BYOK capabilities against the gateway\n- **Benefit:** So that we determine the exact boundaries of Copilot compatibility and avoid unsupported feature expectations.\n\n#### Technical Scope & Context\nPer ADR §10 & §17: GitHub Copilot CLI and custom model support varies depending on client surfaces. Test whether Copilot CLI accepts custom model endpoints, and test VS Code language model configuration where supported.\n\n#### Detailed Tasks\n1. Test GitHub Copilot CLI configuration for custom providers/models.\n2. Test VS Code language model configuration (`github.copilot.chat.customEndpoints` or equivalent).\n3. Document exact compatibility matrix:\n   - Chat: Supported / Unsupported\n   - Inline autocomplete: Supported / Unsupported\n   - Tool calling / Agent mode: Supported / Unsupported\n4. Create summary document `docs/client-setup/copilot-compatibility.md`.\n\n#### Acceptance Criteria\n- **Scenario 1: Compatibility Assessment Verification**\n  - **Given** current versions of GitHub Copilot CLI and VS Code Copilot extension\n  - **When** configured with the gateway base URL\n  - **Then** successful connections and specific limitations are recorded with clear reproduction steps.\n\n#### Definition of Done\n- Copilot testing executed; compatibility and limitation matrix documented.\n\n---\n\n---\n*Generated from [tasks-breakdown-user-stories.md](tasks-breakdown-user-stories.md)*"
+  },
+  {
+    "title": "[US-6.4] Advanced Capabilities Verification (Tool Calling & JSON Mode)",
+    "milestone": "M5: Client Compatibility",
+    "labels": [
+      "milestone-5",
+      "client-testing"
+    ],
+    "body": "## User Story Statement\n- **Role:** As an AI Application Developer\n- **Goal:** I want to verify if the selected models (`qwen2.5-coder:7b`) support tool/function calling and JSON mode through LiteLLM\n- **Benefit:** So that agentic harnesses can invoke tools reliably without syntax errors.\n\n#### Technical Scope & Context\nLiteLLM translates OpenAI `tools` and `response_format: {\"type\": \"json_object\"}` to Ollama's underlying format. Validate whether `qwen2.5-coder:7b` produces valid function calls and valid JSON schema outputs.\n\n#### Detailed Tasks\n1. Create `tests/test-tool-calling.py` defining a mock weather or calculator tool.\n2. Send request with `tools=[...]` and `tool_choice=\"auto\"`.\n3. Verify that the response returns `finish_reason: \"tool_calls\"` and well-formed JSON arguments.\n4. Test `response_format={\"type\": \"json_object\"}` with a prompt instructing JSON output.\n\n#### Acceptance Criteria\n- **Scenario 1: Tool Call Generation**\n  - **Given** a prompt requiring calculation and a calculator tool schema\n  - **When** sending request to `model=\"coding\"`\n  - **Then** the model returns a `tool_calls` array containing function name and parseable JSON arguments.\n- **Scenario 2: Structured JSON Output**\n  - **Given** `response_format={\"type\": \"json_object\"}` specified\n  - **When** the response completes\n  - **Then** the returned text content parses successfully via `json.loads()` without syntax errors.\n\n#### Definition of Done\n- Tool calling and JSON mode tested; capabilities and edge cases documented.\n\n---\n\n---\n*Generated from [tasks-breakdown-user-stories.md](tasks-breakdown-user-stories.md)*"
+  },
+  {
+    "title": "[US-6.5] Fault Injection, Timeout Handling & Error Propagation",
+    "milestone": "M5: Client Compatibility",
+    "labels": [
+      "milestone-5",
+      "client-testing"
+    ],
+    "body": "## User Story Statement\n- **Role:** As a Reliability Engineer\n- **Goal:** I want to test gateway behavior under upstream failure conditions (Ollama stopped, PostgreSQL down, GPU OOM)\n- **Benefit:** So that client applications receive clean HTTP error codes (502, 503, 504) rather than hung sockets or raw stack traces.\n\n#### Technical Scope & Context\nValidate error handling and graceful degradation:\n- Stop Ollama -> Verify LiteLLM returns HTTP 502/503.\n- Disconnect PostgreSQL -> Verify key caching or safe failure.\n- Kill client mid-stream -> Verify cancellation and VRAM release.\n\n#### Detailed Tasks\n1. Build `tests/test-resilience.ps1` to automate failure injection scenarios.\n2. Simulate Ollama service stoppage during active request.\n3. Simulate request cancellation (client terminates TCP connection during streaming).\n4. Verify Ollama aborts generation and GPU memory is freed promptly.\n\n#### Acceptance Criteria\n- **Scenario 1: Upstream Inference Service Down**\n  - **Given** Ollama is stopped\n  - **When** client sends a chat completion request to LiteLLM\n  - **Then** LiteLLM returns HTTP 502 Bad Gateway or 503 Service Unavailable within 5 seconds.\n- **Scenario 2: Mid-Stream Client Disconnect**\n  - **Given** a long streaming response in progress\n  - **When** client abruptly closes the HTTP connection\n  - **Then** LiteLLM drops upstream inference, and Ollama unloads/stops GPU generation for that request.\n\n#### Definition of Done\n- Resilience test script implemented and all scenarios pass with clean status codes.\n\n---\n\n## Epic 7 (M6): Observability, Telemetry & Operational Lifecycle\n\n---\n*Generated from [tasks-breakdown-user-stories.md](tasks-breakdown-user-stories.md)*"
+  },
+  {
+    "title": "[US-7.1] Prometheus Monitoring Stack & LiteLLM Metrics Scraping",
+    "milestone": "M6: Monitoring & Ops Hardening",
+    "labels": [
+      "milestone-6",
+      "monitoring",
+      "automation"
+    ],
+    "body": "## User Story Statement\n- **Role:** As an Observability Engineer\n- **Goal:** I want to deploy Prometheus in Docker and configure scraping of LiteLLM proxy metrics\n- **Benefit:** So that time-series metrics for API traffic, error rates, latencies, and token usage are preserved.\n\n#### Technical Scope & Context\nDeploy Prometheus (`prom/prometheus:v2.52.0`) in `deployment/compose.monitoring.yaml`. LiteLLM exports Prometheus metrics at `http://127.0.0.1:4000/metrics` or dedicated metrics route (per pinned LiteLLM version). Prometheus scrapes this endpoint at a 15-second interval.\n\n#### Detailed Tasks\n1. Create `config/monitoring/prometheus.yml` configured to scrape:\n   - `litellm` (`host.docker.internal:4000` or `127.0.0.1:4000`)\n   - `postgres-exporter` (internal docker network)\n   - Host/GPU exporters\n2. Create `deployment/compose.monitoring.yaml` defining `prometheus` container with persistent volume.\n3. Configure LiteLLM settings to enable Prometheus metrics in `config/litellm/config.yaml`.\n4. Verify Prometheus targets dashboard at `http://localhost:9090/targets` shows LiteLLM `UP`.\n\n#### Acceptance Criteria\n- **Scenario 1: LiteLLM Metrics Scraping**\n  - **Given** Prometheus and LiteLLM are running\n  - **When** querying `http://localhost:9090/api/v1/targets`\n  - **Then** the `litellm` job is reported in state `HEALTHY` / `UP`.\n- **Scenario 2: Metrics Ingestion**\n  - **Given** chat requests processed by LiteLLM\n  - **When** querying Prometheus for `litellm_requests_metric_total` or equivalent\n  - **Then** counter increments match the number of executed requests.\n\n#### Definition of Done\n- Prometheus scrapes LiteLLM metrics successfully; config committed.\n\n---\n\n---\n*Generated from [tasks-breakdown-user-stories.md](tasks-breakdown-user-stories.md)*"
+  },
+  {
+    "title": "[US-7.2] Windows Host & NVIDIA GPU Telemetry Exporters",
+    "milestone": "M6: Monitoring & Ops Hardening",
+    "labels": [
+      "milestone-6",
+      "monitoring",
+      "automation"
+    ],
+    "body": "## User Story Statement\n- **Role:** As a Systems Administrator\n- **Goal:** I want to export host metrics (CPU, RAM, disk) and NVIDIA GPU telemetry (utilization, VRAM, temperature, power)\n- **Benefit:** So that resource bottlenecks, thermal throttling, and VRAM saturation are visible before system crashes occur.\n\n#### Technical Scope & Context\nFor Windows, evaluate:\n- Host: `windows_exporter` running as a Windows service or local binary.\n- GPU: A lightweight telemetry collector calling `nvidia-smi` periodically or `prometheus-nvidia-smi-exporter`.\nPrometheus scrapes these endpoints to collect GPU and host health.\n\n#### Detailed Tasks\n1. Set up `windows_exporter` for Windows CPU, memory, disk, and network stats.\n2. Set up GPU exporter on Windows polling `nvidia-smi` metrics (temperature, VRAM used, GPU utilization %).\n3. Add scrape jobs to `config/monitoring/prometheus.yml`.\n4. Validate metric availability in Prometheus (e.g. `gpu_memory_used_bytes`, `windows_cpu_time_total`).\n\n#### Acceptance Criteria\n- **Scenario 1: GPU Metrics Scraping**\n  - **Given** the GPU telemetry exporter running\n  - **When** querying Prometheus for GPU VRAM usage\n  - **Then** Prometheus returns the real-time VRAM usage matching `nvidia-smi`.\n- **Scenario 2: Host Metrics Scraping**\n  - **Given** `windows_exporter` active\n  - **When** querying CPU and RAM utilization metrics\n  - **Then** Prometheus reports active system utilization metrics.\n\n#### Definition of Done\n- Exporters running on Windows host, scraped by Prometheus, metrics validated.\n\n---\n\n---\n*Generated from [tasks-breakdown-user-stories.md](tasks-breakdown-user-stories.md)*"
+  },
+  {
+    "title": "[US-7.3] Grafana Operational Dashboard & Alerting Rules",
+    "milestone": "M6: Monitoring & Ops Hardening",
+    "labels": [
+      "milestone-6",
+      "monitoring",
+      "automation"
+    ],
+    "body": "## User Story Statement\n- **Role:** As an Operations Specialist\n- **Goal:** I want to deploy Grafana with a provisioned dashboard and alert rules for service degradation\n- **Benefit:** So that I have a unified visual control plane for gateway traffic, GPU load, and failure alerts.\n\n#### Technical Scope & Context\nDeploy Grafana (`grafana/grafana:11.0.0`) in `deployment/compose.monitoring.yaml`. Port 3000 bound to `127.0.0.1:3000`. Auto-provision datasource (Prometheus) and dashboard covering:\n1. Gateway status & uptime\n2. Request rate & HTTP error rate\n3. Request latency & TTFT\n4. Tokens per second\n5. GPU utilization & VRAM usage\n6. Host CPU/RAM/Disk\n7. Database status\n\n#### Detailed Tasks\n1. Add `grafana` service to `deployment/compose.monitoring.yaml`.\n2. Configure Grafana datasource provisioning in `config/monitoring/grafana/provisioning/datasources/`.\n3. Create pre-built dashboard JSON in `config/monitoring/grafana/dashboards/llm-gateway.json`.\n4. Configure Prometheus alerting rules for:\n   - LiteLLM Down\n   - Ollama Down\n   - GPU VRAM > 90%\n   - GPU Temperature > 80°C\n   - Request Error Rate > 5%\n\n#### Acceptance Criteria\n- **Scenario 1: Dashboard Visualization**\n  - **Given** Grafana running at `http://localhost:3000`\n  - **When** navigating to the \"Local LLM Gateway\" dashboard\n  - **Then** all 10 key metric panels display live data without datasource query errors.\n- **Scenario 2: Alert Trigger on Failure**\n  - **Given** alerting rules active\n  - **When** the Ollama service is stopped for > 1 minute\n  - **Then** the `OllamaDown` alert transitions to `FIRING` state in Grafana/Prometheus.\n\n#### Definition of Done\n- Grafana dashboard provisioned; panels and alerts verified functional.\n\n---\n\n---\n*Generated from [tasks-breakdown-user-stories.md](tasks-breakdown-user-stories.md)*"
+  },
+  {
+    "title": "[US-7.4] Automated System Boot Lifecycle & Process Supervision",
+    "milestone": "M6: Monitoring & Ops Hardening",
+    "labels": [
+      "milestone-6",
+      "monitoring",
+      "automation"
+    ],
+    "body": "## User Story Statement\n- **Role:** As a Systems Administrator\n- **Goal:** I want to automate the startup order of all gateway components on Windows boot and provide clean start/stop scripts\n- **Benefit:** So that the PC automatically recovers and resumes serving LLM requests after an unattended reboot without requiring manual user intervention.\n\n#### Technical Scope & Context\nStartup dependency order per ADR §13:\n1. Docker Desktop & Tailscale start on boot.\n2. PostgreSQL container starts and passes healthcheck.\n3. Ollama starts natively on Windows.\n4. LiteLLM Proxy starts after PostgreSQL and Ollama are healthy.\n5. Tailscale Serve exposes the endpoint.\n6. Healthcheck script confirms readiness.\nImplement via Windows Task Scheduler or NSSM (Non-Sucking Service Manager) / Windows Services.\n\n#### Detailed Tasks\n1. Create master orchestrator script `scripts/windows/start.ps1`.\n2. Create graceful shutdown script `scripts/windows/stop.ps1`.\n3. Create comprehensive health check `scripts/windows/health-check.ps1`.\n4. Configure Windows Task Scheduler task (`Run whether user is logged on or not` / `At system startup`) or Windows Service.\n5. Test recovery by performing a simulated system restart.\n\n#### Acceptance Criteria\n- **Scenario 1: Sequential Startup Execution**\n  - **Given** the machine is booted\n  - **When** `scripts/windows/start.ps1` runs\n  - **Then** services start in strict order (Docker/PostgreSQL -> Ollama -> LiteLLM -> Tailscale Serve) and verify healthy.\n- **Scenario 2: Post-Reboot Automatic Recovery**\n  - **Given** the host PC is restarted\n  - **When** the system finishes booting to desktop/service state\n  - **Then** `scripts/windows/health-check.ps1` reports all services healthy and remote HTTPS requests succeed without manual steps.\n\n#### Definition of Done\n- `start.ps1`, `stop.ps1`, and `health-check.ps1` tested and integrated into Windows startup automation.\n\n---\n\n---\n*Generated from [tasks-breakdown-user-stories.md](tasks-breakdown-user-stories.md)*"
+  },
+  {
+    "title": "[US-7.5] PostgreSQL Database Backup & Disaster Recovery Automation",
+    "milestone": "M6: Monitoring & Ops Hardening",
+    "labels": [
+      "milestone-6",
+      "monitoring",
+      "automation"
+    ],
+    "body": "## User Story Statement\n- **Role:** As a Database Administrator\n- **Goal:** I want an automated backup and restore script for PostgreSQL database records and LiteLLM configuration\n- **Benefit:** So that virtual keys, usage records, and configurations can be restored quickly in case of database corruption or drive failure.\n\n#### Technical Scope & Context\nCreate backup script using `docker exec -t <postgres_container> pg_dump -U ...`. Backups should be timestamped, compressed, and stored in a secure backup location (e.g. `D:\\Backups\\llm-gateway\\`). Create corresponding restore script.\n\n#### Detailed Tasks\n1. Create `scripts/windows/backup-db.ps1`:\n   - Runs `pg_dump` inside container.\n   - Saves compressed `.sql.gz` with date/timestamp.\n   - Rotates backups (retains last 7 daily backups).\n2. Create `scripts/windows/restore-db.ps1`:\n   - Restores target `.sql.gz` into PostgreSQL container.\n3. Verify backup and restore procedure with test data.\n\n#### Acceptance Criteria\n- **Scenario 1: Automated Database Backup**\n  - **Given** active virtual keys in PostgreSQL\n  - **When** `scripts/windows/backup-db.ps1` executes\n  - **Then** a non-empty SQL dump file is created with timestamped filename.\n- **Scenario 2: Disaster Recovery Restoration**\n  - **Given** a corrupted or empty database volume\n  - **When** running `scripts/windows/restore-db.ps1` with the latest backup\n  - **Then** all tables, virtual keys, and metadata are restored and functional in LiteLLM.\n\n#### Definition of Done\n- Backup and restore scripts verified end-to-end.\n\n---\n\n## Epic 8: Acceptance Test Suite & Ubuntu Migration Readiness\n\n---\n*Generated from [tasks-breakdown-user-stories.md](tasks-breakdown-user-stories.md)*"
+  },
+  {
+    "title": "[US-8.1] Automated End-to-End Acceptance Test Suite (PowerShell)",
+    "milestone": null,
+    "labels": [
+      "qa",
+      "migration"
+    ],
+    "body": "## User Story Statement\n- **Role:** As a QA Engineer\n- **Goal:** I want a comprehensive automated acceptance test suite covering the 14 test scenarios in ADR §15\n- **Benefit:** So that the entire gateway can be verified in seconds before release and after any configuration change.\n\n#### Technical Scope & Context\nImplement `tests/run-acceptance-suite.ps1` executing the full acceptance matrix:\n1. Valid API key (HTTP 200)\n2. Invalid API key (HTTP 401)\n3. Revoked API key (HTTP 401)\n4. Unauthorized model (HTTP 403)\n5. Valid chat completion\n6. Streaming completion (SSE)\n7. Excessive concurrency / rate limit (HTTP 429)\n8. Invalid request body (HTTP 400)\n9. Client key attempts admin operation (Denied)\n10. Ollama unavailable upstream error\n11. Tailnet boundary enforcement\n12. Monitoring endpoint restriction\n\n#### Detailed Tasks\n1. Create `tests/run-acceptance-suite.ps1`.\n2. Implement automated checks for each scenario using `Invoke-RestMethod` and `Invoke-WebRequest`.\n3. Output test summary table with PASS/FAIL status and latency metrics.\n\n#### Acceptance Criteria\n- **Scenario 1: Acceptance Test Execution**\n  - **Given** healthy gateway and test virtual keys\n  - **When** executing `powershell tests/run-acceptance-suite.ps1`\n  - **Then** all 14 test cases execute, and the overall test suite exits with return code 0.\n\n#### Definition of Done\n- Complete test suite committed and passing on host.\n\n---\n\n---\n*Generated from [tasks-breakdown-user-stories.md](tasks-breakdown-user-stories.md)*"
+  },
+  {
+    "title": "[US-8.2] Ubuntu Server 24.04 LTS Portability Audit & Decoupling Checklist",
+    "milestone": null,
+    "labels": [
+      "qa",
+      "migration"
+    ],
+    "body": "## User Story Statement\n- **Role:** As a Systems Architect\n- **Goal:** I want to verify that all configurations, logical names, and compose files remain decoupled from Windows OS quirks\n- **Benefit:** So that migrating to Ubuntu Server 24.04 LTS in the future requires zero changes to client configurations or database schemas.\n\n#### Technical Scope & Context\nAudit the architecture against the portability principles in ADR §2 & §16. Verify:\n- Client-facing API contract and base URLs are decoupled from the OS.\n- Compose files use standard POSIX-compatible mount syntax.\n- Linux equivalent lifecycle scripts (`scripts/linux/start.sh`, `scripts/linux/stop.sh`, `scripts/linux/health-check.sh`) are drafted and mirror Windows operational intent.\n- Model aliases and virtual keys are strictly portable.\n\n#### Detailed Tasks\n1. Draft Linux lifecycle scripts in `scripts/linux/`:\n   - `start.sh` (systemd / docker compose)\n   - `stop.sh`\n   - `health-check.sh`\n2. Audit `config/litellm/config.yaml` to ensure no Windows-specific absolute paths are hardcoded.\n3. Document Ubuntu migration runbook in `docs/ubuntu-migration-guide.md` covering NVIDIA container toolkit, systemd services, and Docker Compose deployment.\n\n#### Acceptance Criteria\n- **Scenario 1: Portability Verification**\n  - **Given** the configuration files and compose specifications\n  - **When** inspected against Linux deployment requirements\n  - **Then** zero Windows file path delimiters (`\\`) or Windows-specific flags exist in shared configs (`config.yaml`, `compose.yaml`).\n- **Scenario 2: Migration Runbook Completeness**\n  - **Given** `docs/ubuntu-migration-guide.md`\n  - **When** followed step-by-step\n  - **Then** it contains complete commands for driver install, systemd setup, database restore, and test execution.\n\n#### Definition of Done\n- Linux lifecycle scripts drafted, shared configs audited, migration guide completed.\n\n---\n\n## Story Dependencies & Execution Roadmap\n\n```mermaid\ngraph TD\n    subgraph Epic 1 - Scaffolding\n        US11[US-1.1: Repo Scaffolding] --> US12[US-1.2: Host & GPU Verification]\n    end\n\n    subgraph Epic 2 - Inference M1\n        US12 --> US21[US-2.1: Ollama Setup]\n        US21 --> US22[US-2.2: Model Download]\n        US22 --> US23[US-2.3: GPU Benchmarking]\n    end\n\n    subgraph Epic 3 - Gateway M2\n        US12 --> US31[US-3.1: Postgres Docker]\n        US23 --> US32[US-3.2: LiteLLM Windows]\n        US31 --> US32\n        US32 --> US33[US-3.3: Model Routing]\n        US33 --> US34[US-3.4: Chat & Streaming]\n    end\n\n    subgraph Epic 4 - Auth & Security M3\n        US34 --> US41[US-4.1: Master Key]\n        US41 --> US42[US-4.2: Virtual Keys]\n        US42 --> US43[US-4.3: Model Limits & RPM]\n        US43 --> US44[US-4.4: Hardening & Redaction]\n    end\n\n    subgraph Epic 5 - Remote Tailscale M4\n        US44 --> US51[US-5.1: Tailscale Node]\n        US51 --> US52[US-5.2: Tailscale Serve]\n        US52 --> US53[US-5.3: Network Port Audit]\n    end\n\n    subgraph Epic 6 - Client Compatibility M5\n        US53 --> US61[US-6.1: Python SDK]\n        US61 --> US62[US-6.2: Continue / Cline]\n        US61 --> US63[US-6.3: Copilot CLI Assessment]\n        US61 --> US64[US-6.4: Tool Calling & JSON]\n        US61 --> US65[US-6.5: Fault Injection]\n    end\n\n    subgraph Epic 7 - Observability M6\n        US53 --> US71[US-7.1: Prometheus Scrape]\n        US71 --> US72[US-7.2: Windows & GPU Exporter]\n        US72 --> US73[US-7.3: Grafana Dashboard]\n        US73 --> US74[US-7.4: Windows Auto Boot]\n        US74 --> US75[US-7.5: DB Backup Automation]\n    end\n\n    subgraph Epic 8 - Acceptance & Portability\n        US65 --> US81[US-8.1: Automated Test Suite]\n        US75 --> US81\n        US81 --> US82[US-8.2: Ubuntu Migration Audit]\n    end\n```\n\n---\n\n## Definition of Done (Global DoD Checklist)\n\nFor any User Story to be marked as **Completed**:\n- [ ] **Code / Config Completed:** All YAML, PowerShell, Python, or SQL files are created in the target repository directory.\n- [ ] **No Committed Secrets:** Secrets are read from `.env` or environment variables; no raw API keys or passwords in Git.\n- [ ] **Acceptance Criteria Met:** All scenarios under the story's Acceptance Criteria have been manually or automatically verified.\n- [ ] **Error Handling:** Graceful failures with informative logging; no uncaught script terminations.\n- [ ] **Documentation:** Setup, commands, or operational changes are reflected in relevant markdown docs.\n- [ ] **Regression & Isolation:** No unintended network ports exposed outside localhost/tailnet.\n\n---\n*Generated from [tasks-breakdown-user-stories.md](tasks-breakdown-user-stories.md)*"
+  }
+]
